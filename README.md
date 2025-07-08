@@ -80,4 +80,4 @@ Para replicar el análisis de la Prueba de Concepto, sigue estos pasos:
 
 ## 📜 Licencia
 
-Este proyecto está bajo la licencia **Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional**. Puedes leer el texto completo en el archivo [LICENSE](LICENSE) de este repositorio.
+Este proyecto está bajo la licencia **Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional**. Puedes leer el texto completo en el archivo [LICENSE](LICENSE.md) de este repositorio.
