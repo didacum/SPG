@@ -21,12 +21,13 @@ El proyecto está organizado en fases, y cada fase o componente importante tendr
 ```
 /
 ├── PoC/
-│   ├── PoC_Crimea_2014.ipynb       # El notebook con el análisis completo de la Fase 1.
-│   ├── /data
-|   |    └── MOEX.csv             
-│   └── requirements.txt            # Las dependencias de Python para la PoC.
-├── LICENSE                         # La licencia del proyecto.
-└── README.md                       # Este documento.
+│   ├── data/
+│   │   └── MOEX.csv                  # Datos históricos del índice MOEX.
+│   ├── PoC_Crimea_2014.ipynb         # Notebook del primer caso de estudio.
+│   ├── PoC_Ucrania_2022.ipynb        # Notebook del segundo caso de estudio.
+│   └── requirements.txt              # Dependencias de Python para la PoC.
+├── LICENSE                           # La licencia del proyecto.
+└── README.md                         # Este documento.
 ```
 
 ---
@@ -51,7 +52,7 @@ Para replicar el análisis de la Prueba de Concepto, sigue estos pasos:
 
 1.  **Clona el repositorio:**
     ```bash
-    git clone [https://m.youtube.com/watch?v=KrJwqsuhZ8U&pp=0gcJCYUJAYcqIYzv](https://m.youtube.com/watch?v=KrJwqsuhZ8U&pp=0gcJCYUJAYcqIYzv)
+    git clone [https://github.com/](https://github.com/)/didacum/SPG.git
     cd SPG
     ```
 
@@ -74,8 +75,9 @@ Para replicar el análisis de la Prueba de Concepto, sigue estos pasos:
     ```
 
 4.  **Ejecuta el análisis:**
-    Abre la carpeta `SPG` en VS Code y ejecuta el notebook `PoC/PoC_Crimea_2014.ipynb`.
-
+    Abre la carpeta `SPG` en VS Code y ejecuta cualquiera de los notebooks que se encuentran en la carpeta `/PoC`:
+    * `PoC_Crimea_2014.ipynb`
+    * `PoC_Ucrania_2022.ipynb`
 ---
 
 ## 📜 Licencia
