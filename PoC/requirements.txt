@@ -1,4 +1,4 @@
-altgraph @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/altgraph-0.17.2-py2.py3-none-any.whl
+altgraph
 bcrypt==4.1.2
 build==1.2.1
 CacheControl==0.14.0
@@ -13,7 +13,7 @@ distlib==0.3.8
 dulwich==0.21.7
 fastjsonschema==2.19.1
 filelock==3.14.0
-future @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/future-0.18.2-py3-none-any.whl
+future
 gitdb==4.0.10
 GitPython==3.1.31
 idna==3.7
@@ -21,7 +21,7 @@ importlib_metadata==7.1.0
 installer==0.7.0
 jaraco.classes==3.4.0
 keyring==24.3.1
-macholib @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/macholib-1.15.2-py2.py3-none-any.whl
+macholib
 MarkupSafe==2.1.5
 more-itertools==10.2.0
 msgpack==1.0.8
@@ -43,7 +43,7 @@ rapidfuzz==3.8.1
 requests==2.31.0
 requests-toolbelt==1.0.0
 shellingham==1.5.4
-six @ file:///AppleInternal/Library/BuildRoots/39d9dc1a-2111-11f0-be06-226177e5bb69/Library/Caches/com.apple.xbs/Sources/python3/six-1.15.0-py2.py3-none-any.whl
+six
 smmap==5.0.0
 sortedcontainers==2.4.0
 tomli==2.0.1
