@@ -25,6 +25,7 @@ El proyecto está organizado en fases, y cada fase o componente importante tendr
 │   │   └── MOEX.csv                  # Datos históricos del índice MOEX.
 │   ├── PoC_Crimea_2014.ipynb         # Notebook del primer caso de estudio.
 │   ├── PoC_Ucrania_2022.ipynb        # Notebook del segundo caso de estudio.
+│   ├── PoC_Irak_2003.ipynb           # Notebook del tercer caso de estudio.
 │   └── requirements.txt              # Dependencias de Python para la PoC.
 ├── LICENSE                           # La licencia del proyecto.
 └── README.md                         # Este documento.
@@ -78,6 +79,7 @@ Para replicar el análisis de la Prueba de Concepto, sigue estos pasos:
     Abre la carpeta `SPG` en VS Code y ejecuta cualquiera de los notebooks que se encuentran en la carpeta `/PoC`:
     * `PoC_Crimea_2014.ipynb`
     * `PoC_Ucrania_2022.ipynb`
+    * `PoC_Irak_2003.ipynb`
 ---
 
 ## 📜 Licencia
