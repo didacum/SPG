@@ -1,87 +1,130 @@
 # Sistema de Predicción Geopolítica (SPG)
 
-![Licencia](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-blue)
 
-Un proyecto de Data Science para explorar la viabilidad de anticipar conflictos geopolíticos mediante el análisis combinado de datos de mercados financieros e inteligencia pública.
+
+Un proyecto de *Data Science* para explorar la viabilidad de **anticipar conflictos geopolíticos** mediante el análisis combinado de mercados financieros, cadenas de suministro e inteligencia pública.
 
 ---
 
-## Visión del Proyecto
+## 🌍 Visión del Proyecto
 
-Este proyecto nace de la hipótesis de que los mercados financieros, al ser un gigantesco mecanismo de agregación de información, pueden reflejar tensiones geopolíticas antes de que estas se materialicen en conflictos abiertos. El objetivo es combinar el "qué" y "cuándo" de los datos cuantitativos del mercado con el "porqué" del análisis cualitativo para obtener una visión más completa del riesgo global.
+Los mercados financieros actúan como un gigantesco mecanismo de agregación de información y, por tanto, **pueden reflejar tensiones geopolíticas antes de que se materialicen**. El objetivo es combinar el "qué" y el "cuándo" de los datos cuantitativos con el "porqué" del análisis cualitativo para producir un *dashboard* de riesgo global y, en fases posteriores, un modelo predictivo.
 
-Este repositorio documentará el desarrollo del proyecto, desde la prueba de concepto inicial hasta la creación de un posible modelo predictivo.
+Este repositorio documenta la evolución del proyecto: desde la prueba de concepto (PoC) hasta la futura versión beta que incluya un motor de predicción.
 
 ---
 
 ## 🏛️ Estructura del Repositorio
 
-El proyecto está organizado en fases, y cada fase o componente importante tendrá su propia carpeta en este repositorio.
-
-```
+```text
 /
-├── PoC/
+├── apps/                      # Aplicaciones ejecutables
+│   ├── dashboard/             # 📊 Taiwan Strait Risk Dashboard (Next.js + v0)
+│   └── etl/                   # ⚙️  Scripts ETL & loaders (futuro)
+├── PoC/                       # Notebooks de la Prueba de Concepto original
 │   ├── data/
-│   │   └── MOEX.csv                  # Datos históricos del índice MOEX.
-│   ├── PoC_Crimea_2014.ipynb         # Notebook del primer caso de estudio.
-│   ├── PoC_Ucrania_2022.ipynb        # Notebook del segundo caso de estudio.
-│   ├── PoC_Irak_2003.ipynb           # Notebook del tercer caso de estudio.
-│   └── requirements.txt              # Dependencias de Python para la PoC.
-├── LICENSE                           # La licencia del proyecto.
-└── README.md                         # Este documento.
+│   │   └── MOEX.csv
+│   ├── PoC_Crimea_2014.ipynb
+│   ├── PoC_Ucrania_2022.ipynb
+│   ├── PoC_Irak_2003.ipynb
+│   └── requirements.txt
+├── .github/
+│   └── workflows/
+│       └── dashboard.yml      # CI/CD del *dashboard* (opcional)
+├── .gitignore
+├── LICENSE
+└── README.md                  # Este documento
 ```
 
----
-
-## 🚀 Estado Actual del Proyecto
-
-El proyecto sigue el roadmap definido en el documento de planificación inicial.
-
-* ✅ **Fase 0: Fundación y Diseño** - *COMPLETADA*
-* ✅ **Fase 1: Prueba de Concepto (PoC)** - *COMPLETADA*
-* ⏳ **Fase 2: Producto Mínimo Viable (MVP)** - *Próxima fase*
-* 🔲 **Fase 3: Versión Alfa (Modelo Predictivo)** - *Pendiente*
-* 🔲 **Fase 4: Versión Beta (La Aplicación)** - *Pendiente*
-
-El trabajo completado hasta ahora (Fase 1) ha validado la hipótesis fundamental para el caso de estudio de Crimea 2014. El informe completo se encuentra en la carpeta `/PoC`.
+> **Nota** — La carpeta `apps/etl` se añadirá en la siguiente iteración; por ahora sólo contiene el `Dockerfile` y un *stub* del cron de GitHub Actions.
 
 ---
 
-## 🛠️ Cómo Empezar
+## 🚦 Estado del Roadmap
 
-Para replicar el análisis de la Prueba de Concepto, sigue estos pasos:
+| Fase  | Descripción                                | Estado          |
+| ----- | ------------------------------------------ | --------------- |
+| **0** | Fundación y diseño                         | ✅ Completada    |
+| **1** | Prueba de Concepto (PoC)                   | ✅ Completada    |
+| **2** | Producto Mínimo Viable (MVP) – *Dashboard* | 🚧 **En curso** |
+| **3** | Versión Alfa – Modelo Predictivo           | ⏳ Planificado   |
+| **4** | Versión Beta – Aplicación completa         | ⏳ Planificado   |
 
-1.  **Clona el repositorio:**
-    ```bash
-    git clone [https://github.com/](https://github.com/)/didacum/SPG.git
-    cd SPG
-    ```
+Los resultados de la Fase 1 (caso de estudio Crimea 2014) se encuentran en `/PoC`.
 
-2.  **Crea y activa un entorno virtual:**
-    ```bash
-    # Crear el entorno
-    python -m venv venv
+---
 
-    # Activar en macOS/Linux
-    source venv/bin/activate
+## 🚀 Cómo empezar
 
-    # Activar en Windows
-    # venv\Scripts\activate
-    ```
+### 1. Clonar el repositorio
 
-3.  **Instala las dependencias:**
-    El archivo de requerimientos se encuentra dentro de la carpeta `/PoC`.
-    ```bash
-    pip install -r PoC/requirements.txt
-    ```
+```bash
+git clone https://github.com/<tu-usuario>/SPG.git
+cd SPG
+```
 
-4.  **Ejecuta el análisis:**
-    Abre la carpeta `SPG` en VS Code y ejecuta cualquiera de los notebooks que se encuentran en la carpeta `/PoC`:
-    * `PoC_Crimea_2014.ipynb`
-    * `PoC_Ucrania_2022.ipynb`
-    * `PoC_Irak_2003.ipynb`
+### 2. Configurar entorno Python para la PoC
+
+```bash
+python -m venv venv
+source venv/bin/activate   # macOS/Linux
+# .\venv\Scripts\activate  # Windows
+pip install -r PoC/requirements.txt
+```
+
+### 3. Ejecutar los notebooks de la PoC
+
+Abre `PoC/PoC_Crimea_2014.ipynb` (o cualquiera de los otros) en Jupyter / VS Code.
+
+---
+
+## 🖥️  Cómo lanzar el Dashboard (MVP)
+
+El *dashboard* es una aplicación **Next.js 15** generada con **v0** y empaquetada en la carpeta `apps/dashboard`.
+
+> Requiere Node ≥ 20 y **pnpm** (o npm/yarn).
+
+```bash
+# Instalación de dependencias
+cd apps/dashboard
+pnpm install          # o npm install / yarn
+
+# Arrancar en modo desarrollo
+pnpm dev              # abre http://localhost:3000
+```
+
+### Variables de entorno
+
+Crea un archivo `.env.local` dentro de `apps/dashboard` con tus claves de Supabase:
+
+```ini
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_ANON_KEY=eyJ...
+```
+
+### Despliegue en Vercel
+
+Si tienes **Vercel CLI**:
+
+```bash
+vercel pull          # descarga la configuración del proyecto
+vercel deploy --prod # despliegue en producción
+```
+
+El flujo de CI en `.github/workflows/dashboard.yml` muestra un ejemplo de *build* automatizado.
+
+---
+
+## 🤝 Contribuir
+
+1. Haz *fork* y crea una rama: `git checkout -b feature/tu-mejora`
+2. Sigue la guía de estilo (PEP‑8 para Python, ESLint/Prettier para JS).
+3. Lanza `pnpm test` (o `pytest`) antes de abrir el *pull request*.
+
 ---
 
 ## 📜 Licencia
 
-Este proyecto está bajo la licencia **Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional**. Puedes leer el texto completo en el archivo [LICENSE](LICENSE.md) de este repositorio.
+Este proyecto está bajo la licencia **Creative Commons Atribución‑NoComercial‑CompartirIgual 4.0 Internacional**.\
+Consulta el texto completo en [LICENSE](LICENSE).
+
