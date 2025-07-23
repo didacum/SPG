@@ -1,7 +1,5 @@
 # Sistema de Predicción Geopolítica (SPG)
 
-
-
 Un proyecto de *Data Science* para explorar la viabilidad de **anticipar conflictos geopolíticos** mediante el análisis combinado de mercados financieros, cadenas de suministro e inteligencia pública.
 
 ---
@@ -18,9 +16,11 @@ Este repositorio documenta la evolución del proyecto: desde la prueba de concep
 
 ```text
 /
+├── docs/                      # 📚 Documentación
+│   └── ETL_Documentation.md   #   Diseño completo del pipeline ETL
 ├── apps/                      # Aplicaciones ejecutables
 │   ├── dashboard/             # 📊 Taiwan Strait Risk Dashboard (Next.js + v0)
-│   └── etl/                   # ⚙️  Scripts ETL & loaders (futuro)
+│   └── etl/                   # ⚙️  Scripts ETL & loaders
 ├── PoC/                       # Notebooks de la Prueba de Concepto original
 │   ├── data/
 │   │   └── MOEX.csv
@@ -28,24 +28,31 @@ Este repositorio documenta la evolución del proyecto: desde la prueba de concep
 │   ├── PoC_Ucrania_2022.ipynb
 │   ├── PoC_Irak_2003.ipynb
 │   └── requirements.txt
+├── .github/
+│   └── workflows/
+│       └── dashboard.yml      # CI/CD del dashboard (ejemplo)
 ├── .gitignore
 ├── LICENSE
-└── README.md                  
+└── README.md
 ```
 
-> **Nota** — La carpeta `apps/etl` se añadirá en la siguiente iteración.
+---
+
+## 📚 Documentación técnica
+
+- [ETL_Documentation.md](docs/ETL_Documentation.md) – Diseño detallado de extracción, transformación y carga de datos.
 
 ---
 
 ## 🚦 Estado del Roadmap
 
-| Fase  | Descripción                                | Estado          |
-| ----- | ------------------------------------------ | --------------- |
-| **0** | Fundación y diseño                         | ✅ Completada    |
-| **1** | Prueba de Concepto (PoC)                   | ✅ Completada    |
+| Fase | Descripción | Estado |
+|------|-------------|--------|
+| **0** | Fundación y diseño | ✅ Completada |
+| **1** | Prueba de Concepto (PoC) | ✅ Completada |
 | **2** | Producto Mínimo Viable (MVP) – *Dashboard* | 🚧 **En curso** |
-| **3** | Versión Alfa – Modelo Predictivo           | ⏳ Planificado   |
-| **4** | Versión Beta – Aplicación completa         | ⏳ Planificado   |
+| **3** | Versión Alfa – Modelo Predictivo | ⏳ Planificado |
+| **4** | Versión Beta – Aplicación completa | ⏳ Planificado |
 
 Los resultados de la Fase 1 (caso de estudio Crimea 2014) se encuentran en `/PoC`.
 
@@ -75,7 +82,7 @@ Abre `PoC/PoC_Crimea_2014.ipynb` (o cualquiera de los otros) en Jupyter / VS Co
 
 ---
 
-## 🖥️  Cómo lanzar el Dashboard (MVP)
+## 🖥️  Cómo lanzar el Dashboard (MVP)
 
 El *dashboard* es una aplicación **Next.js 15** generada con **v0** y empaquetada en la carpeta `apps/dashboard`.
 
@@ -90,6 +97,24 @@ pnpm install          # o npm install / yarn
 pnpm dev              # abre http://localhost:3000
 ```
 
+### Variables de entorno
+
+Crea un archivo `.env.local` dentro de `apps/dashboard` con tus claves de Supabase:
+
+```ini
+SUPABASE_URL=https://<tu-proyecto>.supabase.co
+SUPABASE_ANON_KEY=eyJ...
+```
+
+### Despliegue en Vercel
+
+```bash
+vercel pull          # descarga la configuración del proyecto
+vercel deploy --prod # despliegue en producción
+```
+
+El flujo de CI en `.github/workflows/dashboard.yml` muestra un ejemplo de *build* automatizado.
+
 ---
 
 ## 🤝 Contribuir
@@ -102,6 +127,5 @@ pnpm dev              # abre http://localhost:3000
 
 ## 📜 Licencia
 
-Este proyecto está bajo la licencia **Creative Commons Atribución‑NoComercial‑CompartirIgual 4.0 Internacional**.\
-Consulta el texto completo en [LICENSE](LICENSE).
+Este proyecto está bajo la licencia **Creative Commons Atribución‑NoComercial‑CompartirIgual 4.0 Internacional**. Consulta el texto completo en [LICENSE](LICENSE).
 
