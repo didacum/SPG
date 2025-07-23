@@ -1,0 +1,21 @@
+name: ETL Skeleton
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & run scaffold
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          docker build -t spg-etl ./apps/etl
+          docker run --rm -e SUPABASE_URL -e SUPABASE_SERVICE_ROLE_KEY spg-etl -c config.yaml
+        

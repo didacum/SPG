@@ -28,15 +28,12 @@ Este repositorio documenta la evolución del proyecto: desde la prueba de concep
 │   ├── PoC_Ucrania_2022.ipynb
 │   ├── PoC_Irak_2003.ipynb
 │   └── requirements.txt
-├── .github/
-│   └── workflows/
-│       └── dashboard.yml      # CI/CD del *dashboard* (opcional)
 ├── .gitignore
 ├── LICENSE
-└── README.md                  # Este documento
+└── README.md                  
 ```
 
-> **Nota** — La carpeta `apps/etl` se añadirá en la siguiente iteración; por ahora sólo contiene el `Dockerfile` y un *stub* del cron de GitHub Actions.
+> **Nota** — La carpeta `apps/etl` se añadirá en la siguiente iteración.
 
 ---
 
@@ -92,26 +89,6 @@ pnpm install          # o npm install / yarn
 # Arrancar en modo desarrollo
 pnpm dev              # abre http://localhost:3000
 ```
-
-### Variables de entorno
-
-Crea un archivo `.env.local` dentro de `apps/dashboard` con tus claves de Supabase:
-
-```ini
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_ANON_KEY=eyJ...
-```
-
-### Despliegue en Vercel
-
-Si tienes **Vercel CLI**:
-
-```bash
-vercel pull          # descarga la configuración del proyecto
-vercel deploy --prod # despliegue en producción
-```
-
-El flujo de CI en `.github/workflows/dashboard.yml` muestra un ejemplo de *build* automatizado.
 
 ---
 
