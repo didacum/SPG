@@ -14,7 +14,7 @@ Su objetivo es alimentar el *dashboard* con datos frescos cada madrugada (05:00�
 
 | Bloque dashboard | Símbolo `assets.symbol` | Descripción                            | Fuente                | Frecuencia | Justificación                   |
 | ---------------- | ----------------------- | -------------------------------------- | --------------------- | ---------- | ------------------------------- |
-| Mercado TW       | `TAIEX`                 | Taiwan Stock Index OHLC                | yfinance              | Diario     | Termómetro bursátil local       |
+| Mercado TW       | `TAIEX`                 | Taiwan Stock Index OHLC                | Stooq                 | Diario     | Termómetro bursátil local       |
 | Mercado TW       | `USD/TWD`               | Spot NT\$ por USD                      | TwelveData            | Diario     | Salidas/entradas de capital     |
 | Mercado TW       | `VIXTWN`                | Índice de volatilidad opciones TAIEX   | TAIFEX CSV            | Diario     | Mide prime de riesgo implícita  |
 | Riesgo fin.      | `CDS_TW_5Y`             | Credit‑Default Swap 5‑y soberano       | S&P Global API        | Diario     | Seguro de impago país           |
@@ -65,7 +65,8 @@ apps/etl/
 
 ### 3.2 Transforms
 
-- `clean_prices()` – ajusta duplicados, convierte zona horaria.
+- `clean_prices()` – ajusta duplicados, convierte zona horaria.
+- `forward_fill_missing_dates()` - rellena días no bursátiles (festivos, fines de semana) con el último valor conocido.
 - `to_base100(df, base_date)` – calcula `base100` para comparabilidad.
 - `compute_risk_index()` – fusiona z‑scores y guarda en tabla `risk_index`.
 
@@ -85,16 +86,28 @@ Batch ≤ 500 filas → respeta rate‑limit Supabase.
 
 ```yaml
 pipelines:
-  - id: taiex
-    extractor: yfinance
-    params: {ticker: "^TWII"}
-    transform: prices
-    asset_symbol: TAIEX
-
-  - id: ais
-    extractor: ais
-    transform: shipping
-    target_table: shipping_metrics
+  - id: "taiex_daily"
+    asset_symbol: "TAIEX"
+    enabled: true
+    extractor:
+      module: "extractors.stooq_extractor"
+      function: "fetch_data"
+      params:
+        ticker: "^TWSE" # Símbolo para TAIEX en Stooq
+        start_date_str: "2024-01-01"
+    transform:
+      module: "transforms.prices"
+      functions:
+        - name: "clean_data"
+          params: {}
+        - name: "forward_fill_missing_dates"
+          params: {}
+        - name: "calculate_base100"
+          params:
+            base_date_str: "2024-01-01"
+    loader:
+      module: "loaders.supabase_loader"
+      function: "load_data"
 ```
 
 El orquestador recorre `pipelines` y ejecuta dinámicamente `extractor → transform → loader`.
@@ -148,5 +161,5 @@ Claves API necesarias: **Supabase**, *News API*, *Spire AIS* (opcional), *Twel
 
 ---
 
-> **Estado** — Esqueleto desplegado el *23‑Jul‑2025*. Primeros indicadores en producción: **TAIEX, USD/TWD, VIXTWN**. Próximos pasos: añadir CSI 300 y Sentiment.
+> **Estado** — Pipeline ETL en producción desde *25-Jul-2025*. Primer indicador (`TAIEX` desde Stooq) cargando datos diariamente. Próximos pasos: añadir `USD/TWD` y `VIXTWN`.
 
