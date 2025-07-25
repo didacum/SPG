@@ -9,4 +9,23 @@ assets:
   # Aquí añadiremos más activos en el futuro (USD/TWD, VIXTWN, etc.)
 
 pipelines:
-  # Los pipelines los definiremos más adelante
+  - id: "TAIEX_daily"
+    asset_symbol: "TAIEX"
+    enabled: true
+    extractor:
+      module: "extractors.yfinance_extractor"
+      function: "fetch_data"
+      params:
+        ticker: "^TWII"
+        period: "1y" # Descargamos el último año para tener contexto para base100
+    transform:
+      module: "transforms.prices"
+      functions:
+        - name: "clean_data"
+          params: {}
+        - name: "calculate_base100"
+          params:
+            base_date_str: "2024-01-01" # Fecha base para la normalización
+    loader:
+      module: "loaders.supabase_loader"
+      function: "load_data"
