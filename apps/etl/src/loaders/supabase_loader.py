@@ -47,6 +47,10 @@ def load_data(df: pd.DataFrame, asset_symbol: str):
         existing_columns = [col for col in columns_to_load if col in df_to_load.columns]
         df_to_load = df_to_load[existing_columns]
 
+        # Asegurar que el 'volume' es un entero para que coincida con el tipo 'bigint' de la BBDD
+        if 'volume' in df_to_load.columns:
+            df_to_load['volume'] = df_to_load['volume'].astype('int64')
+
         # Reemplazar NaN de pandas con None de Python, que se traduce a NULL en la BBDD
         df_to_load = df_to_load.replace({pd.NA: None, pd.NaT: None, float('nan'): None})
 
