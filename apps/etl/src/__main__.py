@@ -26,8 +26,8 @@ def run_pipeline(pipeline_config: dict):
         df = extractor_func(**extractor_cfg.get('params', {}))
 
         if df.empty:
-            logging.warning("El extractor no devolvió datos para el pipeline '%s'. Finalizando.", pipeline_id)
-            return True, pipeline_id
+            logging.error("El extractor no devolvió datos para el pipeline '%s'. Esto se considera un fallo.", pipeline_id)
+            raise RuntimeError("El extractor no devolvió datos.")
 
         # --- TRANSFORMACIÓN ---
         transform_cfg = pipeline_config['transform']
