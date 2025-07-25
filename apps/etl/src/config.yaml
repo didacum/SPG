@@ -16,7 +16,7 @@ pipelines:
       module: "extractors.stooq_extractor"
       function: "fetch_data"
       params:
-        ticker: "^TWII"
+        ticker: "^TWSE"
         start_date_str: "2024-01-01" # Descargamos desde esta fecha
     transform:
       module: "transforms.prices"
