@@ -1,2 +1,12 @@
 date: "2025-07-23"
-pipelines: []
+
+assets:
+  - symbol: "TAIEX"
+    name: "Taiwan Stock Index"
+    category: "Mercado TW"
+    source: "yfinance"
+    currency: "TWD"
+  # Aquí añadiremos más activos en el futuro (USD/TWD, VIXTWN, etc.)
+
+pipelines:
+  # Los pipelines los definiremos más adelante

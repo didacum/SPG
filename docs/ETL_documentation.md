@@ -9,22 +9,8 @@
 Este pipeline automatiza la **extracción**, **transformación** y **carga** de indicadores financieros, métricas de cadena de suministro y señales de sentimiento hacia **Supabase Postgres**.\
 Su objetivo es alimentar el *dashboard* con datos frescos cada madrugada (05:00 CET) y construir una base histórica homogénea que sirva al futuro modelo predictivo.
 
----
 
-## 2 · Diagrama de alto nivel
-
-```mermaid
-graph TD
-  A[GitHub Actions <br> cron 03:00 UTC] --> B[Contenedor<br>apps/etl]
-  B -->|extract| C[APIs externas]
-  B -->|load| D[(Supabase)]
-  D --> E[Dashboard<br>(Next.js)]
-  B --> F[Logs & métricas<br>→ Artifacts · Slack]
-```
-
----
-
-## 3 · Indicadores capturados
+## 2 · Indicadores capturados
 
 | Bloque dashboard | Símbolo `assets.symbol` | Descripción                            | Fuente                | Frecuencia | Justificación                   |
 | ---------------- | ----------------------- | -------------------------------------- | --------------------- | ---------- | ------------------------------- |
@@ -51,7 +37,7 @@ graph TD
 
 ---
 
-## 4 · Arquitectura del código ETL
+## 3 · Arquitectura del código ETL
 
 ```
 apps/etl/
@@ -66,7 +52,7 @@ apps/etl/
 └── tests/                   # pytest ≥85 % cobertura
 ```
 
-### 4.1 Extractors
+### 3.1 Extractors
 
 *Cada módulo **`extractors/*.py`** devuelve un **`pandas.DataFrame`** con columnas standard:*
 
@@ -77,13 +63,13 @@ apps/etl/
 - **yfinance** genérico reutilizable.
 - APIs con autenticación (Spire AIS, News API) leen la clave desde `os.environ`.
 
-### 4.2 Transforms
+### 3.2 Transforms
 
 - `clean_prices()` – ajusta duplicados, convierte zona horaria.
 - `to_base100(df, base_date)` – calcula `base100` para comparabilidad.
 - `compute_risk_index()` – fusiona z‑scores y guarda en tabla `risk_index`.
 
-### 4.3 Loaders
+### 3.3 Loaders
 
 Utilizan `supabase-py`:
 
@@ -95,7 +81,7 @@ Batch ≤ 500 filas → respeta rate‑limit Supabase.
 
 ---
 
-## 5 · Configuración YAML de pipelines (ejemplo)
+## 4 · Configuración YAML de pipelines (ejemplo)
 
 ```yaml
 pipelines:
@@ -115,7 +101,7 @@ El orquestador recorre `pipelines` y ejecuta dinámicamente `extractor → trans
 
 ---
 
-## 6 · Programación en GitHub Actions
+## 5 · Programación en GitHub Actions
 
 ```yaml
 on:
@@ -133,7 +119,7 @@ Variables secretas: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEWSAPI_KEY`, 
 
 ---
 
-## 7 · Seguridad y observabilidad
+## 6 · Seguridad y observabilidad
 
 - **RLS** en Supabase: sólo `service_role` inserta/actualiza.
 - **Logs JSON** a stdout → capturados por GitHub Actions; si `exit != 0`, paso final envía webhook Slack.
@@ -141,7 +127,7 @@ Variables secretas: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEWSAPI_KEY`, 
 
 ---
 
-## 8 · Extender el pipeline
+## 7 · Extender el pipeline
 
 1. Añadir símbolo en `assets`.
 2. Crear extractor o reutilizar uno existente.
@@ -150,7 +136,7 @@ Variables secretas: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `NEWSAPI_KEY`, 
 
 ---
 
-## 9 · Requisitos mínimos
+## 8 · Requisitos mínimos
 
 | Software | Versión                    |
 | -------- | -------------------------- |

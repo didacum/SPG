@@ -40,7 +40,7 @@ Este repositorio documenta la evolución del proyecto: desde la prueba de concep
 
 ## 📚 Documentación técnica
 
-- [ETL_Documentation.md](docs/ETL_Documentation.md) – Diseño detallado de extracción, transformación y carga de datos.
+- [ETL_Documentation.md](docs/ETL_documentation.md) – Diseño detallado de extracción, transformación y carga de datos.
 
 ---
 
