@@ -13,9 +13,19 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 
     df_clean = df.copy()
     
-    # Convertir 'date' a datetime y localizar a UTC
-    # El .dt.date lo convierte a solo fecha, eliminando la hora
-    df_clean['date'] = pd.to_datetime(df_clean['date']).dt.tz_convert(None).dt.date
+    # Convertir 'date' a datetime si no lo es ya
+    df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+    # Si la fecha no tiene zona horaria (es 'naive'), la localizamos a UTC.
+    # Si ya la tiene, nos aseguramos de que sea UTC.
+    if df_clean['date'].dt.tz is None:
+        df_clean['date'] = df_clean['date'].dt.tz_localize('UTC')
+    else:
+        df_clean['date'] = df_clean['date'].dt.tz_convert('UTC')
+    
+    # Finalmente, nos quedamos solo con la fecha, sin la hora.
+    # Esto elimina la información de zona horaria, pero ya hemos estandarizado todo a UTC.
+    df_clean['date'] = df_clean['date'].dt.date
     
     # Eliminar filas donde el precio de cierre es nulo, ya que no podemos trabajar con ellas
     original_rows = len(df_clean)
