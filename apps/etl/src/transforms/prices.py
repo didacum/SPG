@@ -35,6 +35,41 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_clean
 
+def forward_fill_missing_dates(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Rellena los días sin datos (fines de semana, festivos) con el último valor conocido.
+    """
+    if df.empty:
+        return df
+
+    df_filled = df.copy()
+    
+    # Asegurarse de que la columna 'date' es del tipo correcto para el reindexado
+    df_filled['date'] = pd.to_datetime(df_filled['date'])
+    df_filled.set_index('date', inplace=True)
+
+    # Crear un rango de fechas completo desde el primer día hasta el último
+    full_date_range = pd.date_range(start=df_filled.index.min(), end=df_filled.index.max(), freq='D')
+    
+    # Reindexar el DataFrame. Los días que no estaban se llenarán con NaN.
+    df_filled = df_filled.reindex(full_date_range)
+    
+    # Usar forward-fill para rellenar los valores NaN.
+    # No rellenamos 'volume' ya que un volumen 0 es más representativo para un día no bursátil.
+    columns_to_fill = ['open', 'high', 'low', 'close']
+    df_filled[columns_to_fill] = df_filled[columns_to_fill].ffill()
+    
+    # Rellenar el volumen con 0 y el símbolo del activo
+    df_filled['volume'].fillna(0, inplace=True)
+    
+    # Resetear el índice para que 'date' vuelva a ser una columna
+    df_filled.reset_index(inplace=True)
+    df_filled.rename(columns={'index': 'date'}, inplace=True)
+
+    logging.info("Se han rellenado los días no bursátiles. El total de filas ahora es: %d", len(df_filled))
+    
+    return df_filled
+
 def calculate_base100(df: pd.DataFrame, base_date_str: str = None) -> pd.DataFrame:
     """
     Calcula una nueva columna 'value' normalizada a base 100.
@@ -59,25 +94,27 @@ def calculate_base100(df: pd.DataFrame, base_date_str: str = None) -> pd.DataFra
         base_date = df_transformed['date'].min()
         logging.info("No se especificó fecha base, usando la primera disponible: %s", base_date)
 
-    # Encontrar el precio de cierre en la fecha base
-    base_row = df_transformed[df_transformed['date'] == base_date]
+    # Encontrar el precio de cierre en la fecha base o en el siguiente día hábil disponible
+    df_sorted = df_transformed.sort_values('date').set_index('date')
+    base_row = df_sorted.loc[base_date:]
 
     if base_row.empty:
-        logging.error("La fecha base %s no se encuentra en los datos. No se puede normalizar.", base_date)
+        logging.error("La fecha base %s o una posterior no se encuentra en los datos. No se puede normalizar.", base_date)
         df_transformed['value'] = None
         return df_transformed
     
     base_value = base_row['close'].iloc[0]
+    actual_base_date = base_row.index[0]
 
     if base_value == 0:
-        logging.error("El valor base en la fecha %s es 0. No se puede dividir por cero.", base_date)
+        logging.error("El valor base en la fecha %s es 0. No se puede dividir por cero.", actual_base_date)
         df_transformed['value'] = None
         return df_transformed
         
     # Calcular la columna 'value' normalizada a base 100
     df_transformed['value'] = (df_transformed['close'] / base_value) * 100
     
-    logging.info("Normalización a base 100 completada usando el valor %.2f del %s.", base_value, base_date)
+    logging.info("Normalización a base 100 completada usando el valor %.2f del %s.", base_value, actual_base_date)
     
     return df_transformed
 

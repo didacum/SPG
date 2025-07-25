@@ -23,6 +23,8 @@ pipelines:
       functions:
         - name: "clean_data"
           params: {}
+        - name: "forward_fill_missing_dates"
+          params: {}
         - name: "calculate_base100"
           params:
             base_date_str: "2024-01-01" # Fecha base para la normalización

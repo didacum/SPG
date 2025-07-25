@@ -47,6 +47,9 @@ def load_data(df: pd.DataFrame, asset_symbol: str):
         existing_columns = [col for col in columns_to_load if col in df_to_load.columns]
         df_to_load = df_to_load[existing_columns]
 
+        # Reemplazar NaN de pandas con None de Python, que se traduce a NULL en la BBDD
+        df_to_load = df_to_load.replace({pd.NA: None, pd.NaT: None, float('nan'): None})
+
         # Convertir el DataFrame a una lista de diccionarios, que es lo que espera Supabase
         records = df_to_load.to_dict(orient="records")
         
