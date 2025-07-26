@@ -24,7 +24,9 @@ def fetch_data(ticker: str, start_date_str: str = None) -> pd.DataFrame:
     logging.info("Iniciando descarga directa desde Stooq para: %s (URL: %s)", ticker, url)
 
     try:
-        hist = pd.read_csv(url)
+        # Añadimos un User-Agent para simular un navegador y evitar posibles bloqueos (ej. para ^TWII).
+        storage_options = {'User-Agent': 'Mozilla/5.0'}
+        hist = pd.read_csv(url, storage_options=storage_options)
 
         # Si el CSV viene vacío o con el mensaje 'No data', las columnas no existirán
         if hist.empty or 'Close' not in hist.columns:

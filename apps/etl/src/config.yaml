@@ -31,7 +31,7 @@ pipelines:
   - id: "TAIEX_daily"
     asset_symbol: "TAIEX"
     enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^TWII" } }
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^TWSE" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
