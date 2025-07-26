@@ -70,21 +70,21 @@ pipelines:
   - id: "VIXF_daily"
     asset_symbol: "VIXF"
     enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "VI.F" } }
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "VIX.F" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
   - id: "BRENT_daily"
     asset_symbol: "BRENT"
     enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "CB.F" } }
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "B.F" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
   - id: "SOX_daily"
     asset_symbol: "SOX"
     enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "G6.F" } }
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^SOX" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
@@ -104,14 +104,14 @@ pipelines:
 
   - id: "JPYUSD_daily"
     asset_symbol: "JPYUSD"
-    enabled: true
+    enabled: false
     extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "JPYUSD" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
   - id: "KRWUSD_daily"
     asset_symbol: "KRWUSD"
-    enabled: true
+    enabled: false
     extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "KRWUSD" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
