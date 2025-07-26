@@ -1,55 +1,63 @@
 import pandas as pd
-import pandas_datareader.data as web
 import logging
 from datetime import date, timedelta
+from urllib.error import HTTPError
 
 def fetch_data(ticker: str, start_date_str: str = None) -> pd.DataFrame:
     """
-    Obtiene datos históricos de un ticker desde Stooq.
-
-    Args:
-        ticker (str): El símbolo del activo en Stooq (ej: "^TWII").
-        start_date_str (str): Fecha de inicio en formato "YYYY-MM-DD". 
-                              Si es None, se usa hace un año desde hoy.
-
-    Returns:
-        pd.DataFrame: Un DataFrame con los datos OHLCV.
+    Descarga datos históricos de Stooq para un ticker específico usando la URL de descarga de CSV directa.
+    Este método es más robusto que usar pandas-datareader.
+    Si no se especifica start_date_str, se utiliza la fecha de hace 365 días.
     """
+    end_date = date.today()
+    if start_date_str:
+        start_date = date.fromisoformat(start_date_str)
+    else:
+        # Por defecto, obtenemos el último año de datos.
+        start_date = end_date - timedelta(days=365)
+    
+    start_d_str = start_date.strftime('%Y%m%d')
+    end_d_str = end_date.strftime('%Y%m%d')
+    
+    # El ticker para la URL de Stooq no debe llevar el prefijo '^'
+    ticker_for_url = ticker.replace('^', '')
+    
+    url = f"https://stooq.com/q/d/l/?s={ticker_for_url}&d1={start_d_str}&d2={end_d_str}&i=d"
+    
+    logging.info("Iniciando descarga directa desde Stooq para: %s (URL: %s)", ticker, url)
+
     try:
-        if start_date_str:
-            start_date = pd.to_datetime(start_date_str)
-        else:
-            start_date = date.today() - timedelta(days=365)
-        
-        end_date = date.today()
+        hist = pd.read_csv(url)
 
-        logging.info("Iniciando descarga desde Stooq para: %s (desde %s hasta %s)", ticker, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
-        
-        # Stooq devuelve los datos en orden descendente, así que los invertimos
-        hist = web.DataReader(ticker, 'stooq', start=start_date, end=end_date).sort_index()
-
-        if hist.empty:
-            logging.warning("No se encontraron datos para el ticker: %s en Stooq", ticker)
+        # Si el CSV viene vacío o con el mensaje 'No data', las columnas no existirán
+        if hist.empty or 'Close' not in hist.columns:
+            logging.warning("No se encontraron datos o el CSV está vacío para el ticker: %s en Stooq", ticker)
             return pd.DataFrame()
 
-        hist.reset_index(inplace=True)
-        hist.rename(columns={
-            "Date": "date",
-            "Open": "open",
-            "High": "high",
-            "Low": "low",
-            "Close": "close",
-            "Volume": "volume"
-        }, inplace=True)
+        logging.info("Descarga directa de Stooq completada para %s. Obtenidas %d filas.", ticker, len(hist))
         
-        required_columns = ["date", "open", "high", "low", "close", "volume"]
-        hist = hist[required_columns]
+        hist.rename(columns={
+            'Open': 'open',
+            'High': 'high',
+            'Low': 'low',
+            'Close': 'close',
+            'Volume': 'volume'
+        }, inplace=True)
 
-        logging.info("Descarga de Stooq completada para %s. Obtenidas %d filas.", ticker, len(hist))
-        return hist
+        hist['date'] = pd.to_datetime(hist['Date'])
+        
+        # Los datos de Stooq suelen venir en orden descendente, los ordenamos correctamente.
+        hist.sort_values(by='date', ascending=True, inplace=True)
+        
+        # Seleccionar y devolver solo las columnas que nos interesan
+        return hist[['date', 'open', 'high', 'low', 'close', 'volume']]
 
+    except HTTPError as e:
+        # Esto ocurre si el ticker es realmente inválido y la URL devuelve un 404
+        logging.error("Error HTTP %s al descargar datos para el ticker %s desde Stooq (URL: %s)", e.code, ticker, url)
+        return pd.DataFrame()
     except Exception as e:
-        logging.error("Error al descargar datos para el ticker %s desde Stooq: %s", ticker, e, exc_info=True)
+        logging.error("Error inesperado al procesar datos para el ticker %s desde Stooq: %s", ticker, e)
         return pd.DataFrame()
 
 if __name__ == '__main__':

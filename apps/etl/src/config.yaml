@@ -11,21 +11,6 @@ assets:
     category: "Mercado Global"
     source: "Stooq"
     currency: "USD"
-  - symbol: "VIXF"
-    name: "CBOE VIX Futures"
-    category: "Volatilidad"
-    source: "Stooq"
-    currency: "USD"
-  - symbol: "BRENT"
-    name: "Brent Crude Oil Futures"
-    category: "Energía"
-    source: "Stooq"
-    currency: "USD"
-  - symbol: "SOX"
-    name: "PHLX Semiconductor Index"
-    category: "Tecnología"
-    source: "Stooq"
-    currency: "USD"
   - symbol: "NKX"
     name: "Nikkei 225"
     category: "Mercado Asia"
@@ -36,16 +21,6 @@ assets:
     category: "Mercado Asia"
     source: "Stooq"
     currency: "KRW"
-  - symbol: "JPYUSD"
-    name: "JPY/USD Spot"
-    category: "Forex"
-    source: "Stooq"
-    currency: "USD"
-  - symbol: "KRWUSD"
-    name: "KRW/USD Spot"
-    category: "Forex"
-    source: "Stooq"
-    currency: "USD"
   - symbol: "SHC"
     name: "Shanghai Composite"
     category: "Mercado China"
@@ -67,27 +42,6 @@ pipelines:
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
-  - id: "VIXF_daily"
-    asset_symbol: "VIXF"
-    enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "VIX.F" } }
-    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
-    loader: { module: "loaders.supabase_loader", function: "load_data" }
-
-  - id: "BRENT_daily"
-    asset_symbol: "BRENT"
-    enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "B.F" } }
-    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
-    loader: { module: "loaders.supabase_loader", function: "load_data" }
-
-  - id: "SOX_daily"
-    asset_symbol: "SOX"
-    enabled: true
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^SOX" } }
-    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
-    loader: { module: "loaders.supabase_loader", function: "load_data" }
-
   - id: "NKX_daily"
     asset_symbol: "NKX"
     enabled: true
@@ -99,20 +53,6 @@ pipelines:
     asset_symbol: "KOSPI"
     enabled: true
     extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^KOSPI" } }
-    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
-    loader: { module: "loaders.supabase_loader", function: "load_data" }
-
-  - id: "JPYUSD_daily"
-    asset_symbol: "JPYUSD"
-    enabled: false
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "JPYUSD" } }
-    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
-    loader: { module: "loaders.supabase_loader", function: "load_data" }
-
-  - id: "KRWUSD_daily"
-    asset_symbol: "KRWUSD"
-    enabled: false
-    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "KRWUSD" } }
     transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
     loader: { module: "loaders.supabase_loader", function: "load_data" }
 
