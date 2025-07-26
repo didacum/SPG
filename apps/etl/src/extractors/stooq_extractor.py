@@ -19,10 +19,7 @@ def fetch_data(ticker: str, start_date_str: str = None) -> pd.DataFrame:
     start_d_str = start_date.strftime('%Y%m%d')
     end_d_str = end_date.strftime('%Y%m%d')
     
-    # El ticker para la URL de Stooq no debe llevar el prefijo '^'
-    ticker_for_url = ticker.replace('^', '')
-    
-    url = f"https://stooq.com/q/d/l/?s={ticker_for_url}&d1={start_d_str}&d2={end_d_str}&i=d"
+    url = f"https://stooq.com/q/d/l/?s={ticker}&d1={start_d_str}&d2={end_d_str}&i=d"
     
     logging.info("Iniciando descarga directa desde Stooq para: %s (URL: %s)", ticker, url)
 
