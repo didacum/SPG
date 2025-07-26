@@ -4,30 +4,121 @@ assets:
   - symbol: "TAIEX"
     name: "Taiwan Stock Index"
     category: "Mercado TW"
-    source: "yfinance"
+    source: "Stooq"
     currency: "TWD"
-  # Aquí añadiremos más activos en el futuro (USD/TWD, VIXTWN, etc.)
+  - symbol: "SPX"
+    name: "S&P 500"
+    category: "Mercado Global"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "VIXF"
+    name: "CBOE VIX Futures"
+    category: "Volatilidad"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "BRENT"
+    name: "Brent Crude Oil Futures"
+    category: "Energía"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "SOX"
+    name: "PHLX Semiconductor Index"
+    category: "Tecnología"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "NKX"
+    name: "Nikkei 225"
+    category: "Mercado Asia"
+    source: "Stooq"
+    currency: "JPY"
+  - symbol: "KOSPI"
+    name: "KOSPI Composite"
+    category: "Mercado Asia"
+    source: "Stooq"
+    currency: "KRW"
+  - symbol: "JPYUSD"
+    name: "JPY/USD Spot"
+    category: "Forex"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "KRWUSD"
+    name: "KRW/USD Spot"
+    category: "Forex"
+    source: "Stooq"
+    currency: "USD"
+  - symbol: "SHC"
+    name: "Shanghai Composite"
+    category: "Mercado China"
+    source: "Stooq"
+    currency: "CNY"
 
 pipelines:
   - id: "TAIEX_daily"
     asset_symbol: "TAIEX"
     enabled: true
-    extractor:
-      module: "extractors.stooq_extractor"
-      function: "fetch_data"
-      params:
-        ticker: "^TWSE"
-        start_date_str: "2024-01-01" # Descargamos desde esta fecha
-    transform:
-      module: "transforms.prices"
-      functions:
-        - name: "clean_data"
-          params: {}
-        - name: "forward_fill_missing_dates"
-          params: {}
-        - name: "calculate_base100"
-          params:
-            base_date_str: "2024-01-01" # Fecha base para la normalización
-    loader:
-      module: "loaders.supabase_loader"
-      function: "load_data"
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^TWSE" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "SPX_daily"
+    asset_symbol: "SPX"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^SPX" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "VIXF_daily"
+    asset_symbol: "VIXF"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "VI.F" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "BRENT_daily"
+    asset_symbol: "BRENT"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "CB.F" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "SOX_daily"
+    asset_symbol: "SOX"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "G6.F" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "NKX_daily"
+    asset_symbol: "NKX"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^NKX" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "KOSPI_daily"
+    asset_symbol: "KOSPI"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^KOSPI" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "JPYUSD_daily"
+    asset_symbol: "JPYUSD"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "JPYUSD" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "KRWUSD_daily"
+    asset_symbol: "KRWUSD"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "KRWUSD" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
+
+  - id: "SHC_daily"
+    asset_symbol: "SHC"
+    enabled: true
+    extractor: { module: "extractors.stooq_extractor", function: "fetch_data", params: { ticker: "^SHC" } }
+    transform: { module: "transforms.prices", functions: [ { name: "clean_data" }, { name: "forward_fill_missing_dates" }, { name: "calculate_base100", params: { base_date_str: "2024-01-01" } } ] }
+    loader: { module: "loaders.supabase_loader", function: "load_data" }
